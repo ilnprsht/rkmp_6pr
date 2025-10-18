@@ -5,7 +5,7 @@ import '../widgets/product_tile.dart';
 import 'product_form_screen.dart';
 
 class AllProductsScreen extends StatelessWidget {
-  final bool embedInsideHome; // когда true — показываем без AppBar и с вложением в Home
+  final bool embedInsideHome; // когда true — используется в HomeScreen
   const AllProductsScreen({super.key, this.embedInsideHome = false});
 
   @override
@@ -17,12 +17,17 @@ class AllProductsScreen extends StatelessWidget {
         ? const EmptyState(message: 'Каталог пуст')
         : ListView.builder(
       itemCount: items.length,
-      itemBuilder: (_, i) => ProductTile(product: items[i]),
+      itemBuilder: (_, i) => ProductTile(
+        product: items[i],
+        container: container, // ✅ передаём контейнер явно
+      ),
     );
 
     if (embedInsideHome) {
-      // без FAB, т.к. вкладка "Добавить" есть в BottomNavigationBar
-      return Padding(padding: const EdgeInsets.only(top: 8), child: list);
+      return Padding(
+        padding: const EdgeInsets.only(top: 8),
+        child: list,
+      );
     }
 
     return Scaffold(
@@ -32,7 +37,9 @@ class AllProductsScreen extends StatelessWidget {
         onPressed: () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (_) => const ProductFormScreen()),
+            MaterialPageRoute(
+              builder: (_) => const ProductFormScreen(),
+            ),
           );
         },
         child: const Icon(Icons.add),

@@ -6,21 +6,33 @@ import '../screens/product_form_screen.dart';
 
 class ProductTile extends StatelessWidget {
   final Product product;
-  const ProductTile({super.key, required this.product});
+  final _ProductsContainerState container;
+
+  const ProductTile({
+    super.key,
+    required this.product,
+    required this.container,
+  });
 
   Future<void> _confirmDelete(BuildContext context) async {
-    final container = ProductsContainer.of(context);
     final result = await showDialog<bool>(
       context: context,
       builder: (ctx) => AlertDialog(
         title: const Text('Удалить запись?'),
         content: Text('Товар «${product.name}» будет удалён из каталога.'),
         actions: [
-          TextButton(onPressed: () => Navigator.pop(ctx, false), child: const Text('Отмена')),
-          FilledButton(onPressed: () => Navigator.pop(ctx, true), child: const Text('Удалить')),
+          TextButton(
+            onPressed: () => Navigator.pop(ctx, false),
+            child: const Text('Отмена'),
+          ),
+          FilledButton(
+            onPressed: () => Navigator.pop(ctx, true),
+            child: const Text('Удалить'),
+          ),
         ],
       ),
     );
+
     if (result == true) {
       container.deleteProduct(product.id);
     }
@@ -28,17 +40,19 @@ class ProductTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final container = ProductsContainer.of(context);
-
     return Card(
       margin: const EdgeInsets.symmetric(vertical: 6, horizontal: 8),
       child: ListTile(
         title: Text('${product.name} • ${product.brand}'),
-        subtitle: Text('${product.category} • ${product.volume} • ★ ${product.rating.toStringAsFixed(1)}'),
+        subtitle: Text(
+          '${product.category} • ${product.volume} • ★ ${product.rating.toStringAsFixed(1)}',
+        ),
         onTap: () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (_) => ProductDetailScreen(product: product)),
+            MaterialPageRoute(
+              builder: (_) => ProductDetailScreen(product: product),
+            ),
           );
         },
         trailing: Wrap(
@@ -46,7 +60,10 @@ class ProductTile extends StatelessWidget {
           children: [
             IconButton(
               tooltip: 'Избранное',
-              icon: Icon(product.isFavorite ? Icons.favorite : Icons.favorite_border),
+              icon: Icon(
+                product.isFavorite ? Icons.favorite : Icons.favorite_border,
+                color: product.isFavorite ? Colors.pinkAccent : null,
+              ),
               onPressed: () => container.toggleFavorite(product.id),
             ),
             IconButton(
