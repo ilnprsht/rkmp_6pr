@@ -37,19 +37,9 @@ class _ProductsContainerState extends State<ProductsContainer> {
       rating: 4.8,
       isFavorite: true,
     ),
-    Product(
-      id: 3,
-      name: 'Better Than Sex',
-      brand: 'Too Faced',
-      category: 'Декоративная',
-      volume: '8 мл',
-      expirationDate: '05.2026',
-      rating: 4.2,
-      isFavorite: false,
-    ),
   ];
 
-  int _nextId = 4;
+  int _nextId = 3;
 
   List<Product> get products => List.unmodifiable(_products);
 
@@ -83,12 +73,6 @@ class _ProductsContainerState extends State<ProductsContainer> {
   }
 
   List<Product> getFavorites() => _products.where((p) => p.isFavorite).toList();
-
-  // статистика для главной страницы
-  int get totalCount => _products.length;
-  int get favoritesCount => _products.where((p) => p.isFavorite).length;
-  int get categoriesCount =>
-      _products.map((p) => p.category).toSet().length;
 
   @override
   Widget build(BuildContext context) => widget.child;

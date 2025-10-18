@@ -19,11 +19,9 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     final state = ProductsContainer.of(context);
 
-    // вкладки: 0 - Все + статистика (как в отчёте), 1 - Избранное, 2 - Добавить
     final pages = <Widget>[
       Column(
         children: [
-          // статистика
           Padding(
             padding: const EdgeInsets.fromLTRB(12, 12, 12, 0),
             child: GridView.count(
