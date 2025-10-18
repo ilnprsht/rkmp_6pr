@@ -22,14 +22,13 @@ class ProductDetailScreen extends StatelessWidget {
     );
     if (result == true) {
       onDelete();
-      Navigator.pop(context); // закрыть экран деталей после удаления
+      Navigator.pop(context);
     }
   }
 
   @override
   Widget build(BuildContext context) {
     final state = ProductsContainer.of(context);
-    // берём актуальный экземпляр по id (на случай, если запись менялась)
     final current = state.products.firstWhere(
           (p) => p.id == product.id,
       orElse: () => product,

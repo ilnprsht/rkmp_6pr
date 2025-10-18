@@ -28,11 +28,11 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
             product: p,
             onToggleFavorite: () {
               container.toggleFavorite(p.id);
-              setState(() {}); // ✅ теперь экран перерисуется сразу
+              setState(() {});
             },
             onDelete: () {
               container.deleteProduct(p.id);
-              setState(() {}); // ✅ обновляем список после удаления
+              setState(() {});
             },
           );
         },
@@ -40,3 +40,5 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
     );
   }
 }
+
+

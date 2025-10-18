@@ -77,3 +77,4 @@ class _ProductsContainerState extends State<ProductsContainer> {
   @override
   Widget build(BuildContext context) => widget.child;
 }
+

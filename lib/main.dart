@@ -11,7 +11,7 @@ class AppRoot extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ProductsContainer(          // ✅ обязательно оборачивает всё приложение
+    return ProductsContainer(
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Каталог косметики',
@@ -24,3 +24,4 @@ class AppRoot extends StatelessWidget {
     );
   }
 }
+

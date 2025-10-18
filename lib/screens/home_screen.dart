@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../state/products_container.dart';
 import 'all_products_screen.dart';
 import 'favorites_screen.dart';
 import 'product_form_screen.dart';

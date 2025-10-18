@@ -50,7 +50,7 @@ class _ProductFormScreenState extends State<ProductFormScreen> {
     final container = ProductsContainer.of(context);
     if (widget.editing == null) {
       container.addProduct(Product(
-        id: 0, // контейнер присвоит новый id
+        id: 0,
         name: _nameCtrl.text.trim(),
         brand: _brandCtrl.text.trim(),
         category: _category,

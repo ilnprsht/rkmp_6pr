@@ -5,7 +5,7 @@ import '../widgets/product_tile.dart';
 import 'product_form_screen.dart';
 
 class AllProductsScreen extends StatelessWidget {
-  final bool embedInsideHome; // когда true — используется в HomeScreen
+  final bool embedInsideHome;
   const AllProductsScreen({super.key, this.embedInsideHome = false});
 
   @override
