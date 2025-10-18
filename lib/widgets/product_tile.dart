@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
 import '../models/product.dart';
-import '../state/products_container.dart';
 import '../screens/product_detail_screen.dart';
 import '../screens/product_form_screen.dart';
 
 class ProductTile extends StatelessWidget {
   final Product product;
-  final _ProductsContainerState container;
+  final VoidCallback onToggleFavorite;
+  final VoidCallback onDelete;
 
   const ProductTile({
     super.key,
     required this.product,
-    required this.container,
+    required this.onToggleFavorite,
+    required this.onDelete,
   });
 
   Future<void> _confirmDelete(BuildContext context) async {
@@ -32,10 +33,7 @@ class ProductTile extends StatelessWidget {
         ],
       ),
     );
-
-    if (result == true) {
-      container.deleteProduct(product.id);
-    }
+    if (result == true) onDelete();
   }
 
   @override
@@ -64,7 +62,7 @@ class ProductTile extends StatelessWidget {
                 product.isFavorite ? Icons.favorite : Icons.favorite_border,
                 color: product.isFavorite ? Colors.pinkAccent : null,
               ),
-              onPressed: () => container.toggleFavorite(product.id),
+              onPressed: onToggleFavorite,
             ),
             IconButton(
               tooltip: 'Редактировать',

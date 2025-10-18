@@ -8,7 +8,7 @@ class ProductDetailScreen extends StatelessWidget {
   final Product product;
   const ProductDetailScreen({super.key, required this.product});
 
-  Future<void> _confirmDelete(BuildContext context) async {
+  Future<void> _confirmDelete(BuildContext context, void Function() onDelete) async {
     final result = await showDialog<bool>(
       context: context,
       builder: (ctx) => AlertDialog(
@@ -21,16 +21,19 @@ class ProductDetailScreen extends StatelessWidget {
       ),
     );
     if (result == true) {
-      ProductsContainer.of(context).deleteProduct(product.id);
-      Navigator.pop(context);
+      onDelete();
+      Navigator.pop(context); // закрыть экран деталей после удаления
     }
   }
 
   @override
   Widget build(BuildContext context) {
     final state = ProductsContainer.of(context);
-    final current = state.products.firstWhere((p) => p.id == product.id,
-        orElse: () => product);
+    // берём актуальный экземпляр по id (на случай, если запись менялась)
+    final current = state.products.firstWhere(
+          (p) => p.id == product.id,
+      orElse: () => product,
+    );
 
     return Scaffold(
       appBar: AppBar(title: const Text('Информация о товаре')),
@@ -44,7 +47,7 @@ class ProductDetailScreen extends StatelessWidget {
               MaterialPageRoute(builder: (_) => ProductFormScreen(editing: current)),
             );
           },
-          onDelete: () => _confirmDelete(context),
+          onDelete: () => _confirmDelete(context, () => state.deleteProduct(current.id)),
         ),
       ),
     );

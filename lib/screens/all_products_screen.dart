@@ -17,10 +17,14 @@ class AllProductsScreen extends StatelessWidget {
         ? const EmptyState(message: 'Каталог пуст')
         : ListView.builder(
       itemCount: items.length,
-      itemBuilder: (_, i) => ProductTile(
-        product: items[i],
-        container: container, // ✅ передаём контейнер явно
-      ),
+      itemBuilder: (_, i) {
+        final p = items[i];
+        return ProductTile(
+          product: p,
+          onToggleFavorite: () => container.toggleFavorite(p.id),
+          onDelete: () => container.deleteProduct(p.id),
+        );
+      },
     );
 
     if (embedInsideHome) {
