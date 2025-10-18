@@ -4,10 +4,15 @@ import '../widgets/empty_state.dart';
 import '../widgets/product_tile.dart';
 import 'product_form_screen.dart';
 
-class AllProductsScreen extends StatelessWidget {
+class AllProductsScreen extends StatefulWidget {
   final bool embedInsideHome;
   const AllProductsScreen({super.key, this.embedInsideHome = false});
 
+  @override
+  State<AllProductsScreen> createState() => _AllProductsScreenState();
+}
+
+class _AllProductsScreenState extends State<AllProductsScreen> {
   @override
   Widget build(BuildContext context) {
     final container = ProductsContainer.of(context);
@@ -21,13 +26,19 @@ class AllProductsScreen extends StatelessWidget {
         final p = items[i];
         return ProductTile(
           product: p,
-          onToggleFavorite: () => container.toggleFavorite(p.id),
-          onDelete: () => container.deleteProduct(p.id),
+          onToggleFavorite: () {
+            container.toggleFavorite(p.id);
+            setState(() {});
+          },
+          onDelete: () {
+            container.deleteProduct(p.id);
+            setState(() {});
+          },
         );
       },
     );
 
-    if (embedInsideHome) {
+    if (widget.embedInsideHome) {
       return Padding(
         padding: const EdgeInsets.only(top: 8),
         child: list,
@@ -38,13 +49,14 @@ class AllProductsScreen extends StatelessWidget {
       appBar: AppBar(title: const Text('Все товары')),
       body: list,
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.push(
+        onPressed: () async {
+          await Navigator.push(
             context,
             MaterialPageRoute(
               builder: (_) => const ProductFormScreen(),
             ),
           );
+          setState(() {});
         },
         child: const Icon(Icons.add),
       ),
