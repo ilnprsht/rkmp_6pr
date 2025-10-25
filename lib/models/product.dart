@@ -2,11 +2,12 @@ class Product {
   final int id;
   final String name;
   final String brand;
-  final String category; // 'Уходовая', 'Декоративная', 'Парфюмерия'
-  final String volume;   // напр., "50 мл"
-  final String expirationDate; // напр., "12.2026"
-  final double rating;   // 1..5
+  final String category;
+  final String volume;
+  final String expirationDate;
+  final double rating;
   final bool isFavorite;
+  final String? imageUrl; // новое поле
 
   const Product({
     required this.id,
@@ -17,6 +18,7 @@ class Product {
     required this.expirationDate,
     required this.rating,
     required this.isFavorite,
+    this.imageUrl, // новое
   });
 
   Product copyWith({
@@ -28,6 +30,7 @@ class Product {
     String? expirationDate,
     double? rating,
     bool? isFavorite,
+    String? imageUrl, // новое
   }) {
     return Product(
       id: id ?? this.id,
@@ -38,6 +41,7 @@ class Product {
       expirationDate: expirationDate ?? this.expirationDate,
       rating: rating ?? this.rating,
       isFavorite: isFavorite ?? this.isFavorite,
+      imageUrl: imageUrl ?? this.imageUrl, // новое
     );
   }
 }
