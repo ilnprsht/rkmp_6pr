@@ -12,10 +12,12 @@ class ProductFormScreen extends StatefulWidget {
 
 class _ProductFormScreenState extends State<ProductFormScreen> {
   final _formKey = GlobalKey<FormState>();
+
   final _nameCtrl = TextEditingController();
   final _brandCtrl = TextEditingController();
   final _volumeCtrl = TextEditingController();
   final _expCtrl = TextEditingController();
+  final _imageUrlCtrl = TextEditingController();
 
   final _categories = const ['Уходовая', 'Декоративная', 'Парфюмерия'];
   String _category = 'Уходовая';
@@ -32,6 +34,7 @@ class _ProductFormScreenState extends State<ProductFormScreen> {
       _expCtrl.text = e.expirationDate;
       _category = e.category;
       _rating = e.rating;
+      _imageUrlCtrl.text = e.imageUrl ?? '';
     }
   }
 
@@ -41,6 +44,7 @@ class _ProductFormScreenState extends State<ProductFormScreen> {
     _brandCtrl.dispose();
     _volumeCtrl.dispose();
     _expCtrl.dispose();
+    _imageUrlCtrl.dispose(); // ✅
     super.dispose();
   }
 
@@ -48,6 +52,10 @@ class _ProductFormScreenState extends State<ProductFormScreen> {
     if (!_formKey.currentState!.validate()) return;
 
     final container = ProductsContainer.of(context);
+    final imageUrl = _imageUrlCtrl.text.trim().isEmpty
+        ? null
+        : _imageUrlCtrl.text.trim();
+
     if (widget.editing == null) {
       container.addProduct(Product(
         id: 0,
@@ -58,6 +66,7 @@ class _ProductFormScreenState extends State<ProductFormScreen> {
         expirationDate: _expCtrl.text.trim(),
         rating: _rating,
         isFavorite: false,
+        imageUrl: imageUrl,
       ));
     } else {
       container.updateProduct(widget.editing!.copyWith(
@@ -67,6 +76,7 @@ class _ProductFormScreenState extends State<ProductFormScreen> {
         volume: _volumeCtrl.text.trim(),
         expirationDate: _expCtrl.text.trim(),
         rating: _rating,
+        imageUrl: imageUrl,
       ));
     }
     Navigator.pop(context);
@@ -89,12 +99,14 @@ class _ProductFormScreenState extends State<ProductFormScreen> {
               TextFormField(
                 controller: _nameCtrl,
                 decoration: const InputDecoration(labelText: 'Название'),
-                validator: (v) => (v == null || v.trim().isEmpty) ? 'Введите название' : null,
+                validator: (v) =>
+                (v == null || v.trim().isEmpty) ? 'Введите название' : null,
               ),
               TextFormField(
                 controller: _brandCtrl,
                 decoration: const InputDecoration(labelText: 'Бренд'),
-                validator: (v) => (v == null || v.trim().isEmpty) ? 'Введите бренд' : null,
+                validator: (v) =>
+                (v == null || v.trim().isEmpty) ? 'Введите бренд' : null,
               ),
               DropdownButtonFormField<String>(
                 value: _category,
@@ -106,14 +118,28 @@ class _ProductFormScreenState extends State<ProductFormScreen> {
               ),
               TextFormField(
                 controller: _volumeCtrl,
-                decoration: const InputDecoration(labelText: 'Объём (напр., 50 мл)'),
-                validator: (v) => (v == null || v.trim().isEmpty) ? 'Укажите объём' : null,
+                decoration:
+                const InputDecoration(labelText: 'Объём (напр., 50 мл)'),
+                validator: (v) =>
+                (v == null || v.trim().isEmpty) ? 'Укажите объём' : null,
               ),
               TextFormField(
                 controller: _expCtrl,
-                decoration: const InputDecoration(labelText: 'Срок годности (ММ.ГГГГ)'),
-                validator: (v) => (v == null || v.trim().isEmpty) ? 'Укажите срок годности' : null,
+                decoration:
+                const InputDecoration(labelText: 'Срок годности (ММ.ГГГГ)'),
+                validator: (v) => (v == null || v.trim().isEmpty)
+                    ? 'Укажите срок годности'
+                    : null,
               ),
+
+              TextFormField(
+                controller: _imageUrlCtrl,
+                decoration: const InputDecoration(
+                  labelText: 'URL изображения (опционально)',
+                ),
+                keyboardType: TextInputType.url,
+              ),
+
               const SizedBox(height: 16),
               Row(
                 children: [
