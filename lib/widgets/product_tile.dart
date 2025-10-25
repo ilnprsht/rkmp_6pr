@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:cached_network_image/cached_network_image.dart'; // ✅
 import '../models/product.dart';
 import '../screens/product_detail_screen.dart';
 import '../screens/product_form_screen.dart';
@@ -41,10 +42,31 @@ class ProductTile extends StatelessWidget {
     return Card(
       margin: const EdgeInsets.symmetric(vertical: 6, horizontal: 8),
       child: ListTile(
+        leading: (product.imageUrl != null && product.imageUrl!.isNotEmpty)
+            ? ClipRRect(
+          borderRadius: BorderRadius.circular(8),
+          child: CachedNetworkImage(
+            imageUrl: product.imageUrl!,
+            width: 56,
+            height: 56,
+            fit: BoxFit.cover,
+            placeholder: (_, __) => const SizedBox(
+              width: 56,
+              height: 56,
+              child:
+              Center(child: CircularProgressIndicator(strokeWidth: 2)),
+            ),
+            errorWidget: (_, __, ___) =>
+            const Icon(Icons.broken_image, size: 32),
+          ),
+        )
+            : const Icon(Icons.image_not_supported, size: 32),
+
         title: Text('${product.name} • ${product.brand}'),
         subtitle: Text(
           '${product.category} • ${product.volume} • ★ ${product.rating.toStringAsFixed(1)}',
         ),
+
         onTap: () {
           Navigator.push(
             context,
@@ -53,6 +75,7 @@ class ProductTile extends StatelessWidget {
             ),
           );
         },
+
         trailing: Wrap(
           spacing: 4,
           children: [
