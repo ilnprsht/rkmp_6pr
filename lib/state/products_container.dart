@@ -26,6 +26,7 @@ class _ProductsContainerState extends State<ProductsContainer> {
       expirationDate: '08.2027',
       rating: 4.5,
       isFavorite: false,
+      imageUrl: 'https://picsum.photos/id/1011/600/600',
     ),
     Product(
       id: 2,
@@ -36,10 +37,56 @@ class _ProductsContainerState extends State<ProductsContainer> {
       expirationDate: '12.2028',
       rating: 4.8,
       isFavorite: true,
+      imageUrl: 'https://picsum.photos/id/1025/600/600',
+    ),
+    Product(
+      id: 3,
+      name: 'Better Than Sex',
+      brand: 'Too Faced',
+      category: 'Декоративная',
+      volume: '8 мл',
+      expirationDate: '05.2026',
+      rating: 4.2,
+      isFavorite: false,
+      imageUrl: 'https://picsum.photos/id/100/600/600',
+    ),
+    Product(
+      id: 4,
+      name: 'Advanced Night Repair',
+      brand: 'Estée Lauder',
+      category: 'Уходовая',
+      volume: '30 мл',
+      expirationDate: '03.2027',
+      rating: 4.7,
+      isFavorite: false,
+      imageUrl: 'https://picsum.photos/id/433/600/600',
+    ),
+    Product(
+      id: 5,
+      name: 'La Vie Est Belle',
+      brand: 'Lancôme',
+      category: 'Парфюмерия',
+      volume: '75 мл',
+      expirationDate: '10.2028',
+      rating: 4.6,
+      isFavorite: false,
+      imageUrl: 'https://picsum.photos/id/318/600/600',
+    ),
+    // при желании можно добавить ещё
+    Product(
+      id: 6,
+      name: 'Teint Idole Ultra Wear',
+      brand: 'Lancôme',
+      category: 'Декоративная',
+      volume: '30 мл',
+      expirationDate: '02.2027',
+      rating: 4.4,
+      isFavorite: false,
+      imageUrl: 'https://picsum.photos/id/237/600/600',
     ),
   ];
 
-  int _nextId = 3;
+  int _nextId = 7;
 
   List<Product> get products => List.unmodifiable(_products);
 
@@ -77,4 +124,3 @@ class _ProductsContainerState extends State<ProductsContainer> {
   @override
   Widget build(BuildContext context) => widget.child;
 }
-
