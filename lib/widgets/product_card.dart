@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:cached_network_image/cached_network_image.dart'; // ✅
 import '../models/product.dart';
 
 class ProductCard extends StatelessWidget {
@@ -24,20 +25,53 @@ class ProductCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(product.name,
-                style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-            const SizedBox(height: 8),
+            // Заголовок
+            Text(
+              product.name,
+              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            ),
+
+            // ✅ Большое изображение (если URL указан)
+            if ((product.imageUrl ?? '').isNotEmpty) ...[
+              const SizedBox(height: 8),
+              ClipRRect(
+                borderRadius: BorderRadius.circular(12),
+                child: CachedNetworkImage(
+                  imageUrl: product.imageUrl!,
+                  height: 220,
+                  width: double.infinity,
+                  fit: BoxFit.cover,
+                  placeholder: (_, __) => const SizedBox(
+                    height: 220,
+                    child: Center(child: CircularProgressIndicator()),
+                  ),
+                  errorWidget: (_, __, ___) => const SizedBox(
+                    height: 220,
+                    child: Center(child: Icon(Icons.broken_image, size: 48)),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 12),
+            ],
+
+            // Остальная информация
             Text('Бренд: ${product.brand}'),
             Text('Категория: ${product.category}'),
             Text('Объём: ${product.volume}'),
             Text('Срок годности: ${product.expirationDate}'),
             Text('Рейтинг: ★ ${product.rating.toStringAsFixed(1)}'),
             const Divider(height: 24),
+
+            // Кнопки действий
             Row(
               children: [
                 IconButton(
                   tooltip: 'Избранное',
-                  icon: Icon(product.isFavorite ? Icons.favorite : Icons.favorite_border),
+                  icon: Icon(
+                    product.isFavorite
+                        ? Icons.favorite
+                        : Icons.favorite_border,
+                  ),
                   onPressed: onToggleFavorite,
                 ),
                 const SizedBox(width: 8),
