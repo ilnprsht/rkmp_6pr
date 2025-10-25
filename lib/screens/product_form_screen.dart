@@ -2,9 +2,18 @@ import 'package:flutter/material.dart';
 import '../models/product.dart';
 import '../state/products_container.dart';
 
+/// Экран добавления/редактирования товара.
+/// Вариант B: если экран открыт как ВКЛАДКА в HomeScreen,
+/// по завершении сохранения вызывает [onSavedInTab] для переключения вкладки.
 class ProductFormScreen extends StatefulWidget {
   final Product? editing;
-  const ProductFormScreen({super.key, this.editing});
+  final VoidCallback? onSavedInTab; // ✅ колбэк для варианта B
+
+  const ProductFormScreen({
+    super.key,
+    this.editing,
+    this.onSavedInTab,
+  });
 
   @override
   State<ProductFormScreen> createState() => _ProductFormScreenState();
@@ -44,7 +53,7 @@ class _ProductFormScreenState extends State<ProductFormScreen> {
     _brandCtrl.dispose();
     _volumeCtrl.dispose();
     _expCtrl.dispose();
-    _imageUrlCtrl.dispose(); // ✅
+    _imageUrlCtrl.dispose();
     super.dispose();
   }
 
@@ -58,7 +67,7 @@ class _ProductFormScreenState extends State<ProductFormScreen> {
 
     if (widget.editing == null) {
       container.addProduct(Product(
-        id: 0,
+        id: 0, // присвоится автоматически
         name: _nameCtrl.text.trim(),
         brand: _brandCtrl.text.trim(),
         category: _category,
@@ -79,7 +88,28 @@ class _ProductFormScreenState extends State<ProductFormScreen> {
         imageUrl: imageUrl,
       ));
     }
-    Navigator.pop(context);
+
+    // ✅ Вариант B:
+    // если экран открыт через push -> закрываем,
+    // если это вкладка -> просим HomeScreen переключить вкладку и остаёмся.
+    if (Navigator.canPop(context)) {
+      Navigator.pop(context);
+    } else {
+      widget.onSavedInTab?.call(); // переключить вкладку в HomeScreen
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Продукт сохранён')),
+      );
+      // Дополнительно можно очистить форму:
+      _nameCtrl.clear();
+      _brandCtrl.clear();
+      _volumeCtrl.clear();
+      _expCtrl.clear();
+      _imageUrlCtrl.clear();
+      setState(() {
+        _category = 'Уходовая';
+        _rating = 3;
+      });
+    }
   }
 
   @override
@@ -131,7 +161,6 @@ class _ProductFormScreenState extends State<ProductFormScreen> {
                     ? 'Укажите срок годности'
                     : null,
               ),
-
               TextFormField(
                 controller: _imageUrlCtrl,
                 decoration: const InputDecoration(
@@ -139,7 +168,6 @@ class _ProductFormScreenState extends State<ProductFormScreen> {
                 ),
                 keyboardType: TextInputType.url,
               ),
-
               const SizedBox(height: 16),
               Row(
                 children: [

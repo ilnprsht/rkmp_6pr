@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../state/products_container.dart';
 import 'all_products_screen.dart';
 import 'favorites_screen.dart';
 import 'product_form_screen.dart';
@@ -15,10 +16,15 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // ✅ Вариант B: передаём колбэк onSavedInTab в форму (3-я вкладка)
     final pages = <Widget>[
       const AllProductsScreen(embedInsideHome: true),
       const FavoritesScreen(),
-      const ProductFormScreen(),
+      ProductFormScreen(
+        onSavedInTab: () {
+          setState(() => _selectedIndex = 0); // вернуться на «Все товары»
+        },
+      ),
     ];
 
     return Scaffold(
