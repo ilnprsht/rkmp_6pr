@@ -31,15 +31,14 @@ class ProductCard extends StatelessWidget {
               style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
 
-            // ✅ Большое изображение (если URL указан)
             if ((product.imageUrl ?? '').isNotEmpty) ...[
               const SizedBox(height: 8),
               ClipRRect(
                 borderRadius: BorderRadius.circular(12),
                 child: CachedNetworkImage(
                   imageUrl: product.imageUrl!,
-                  //height: 220,
-                  width: double.infinity,
+                  height: 400,
+                  width: 500,
                   fit: BoxFit.cover,
                   placeholder: (_, __) => const SizedBox(
                     height: 220,
